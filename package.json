@@ -1,0 +1,14 @@
+{
+  "name": "markdown-studio",
+  "version": "0.1.0",
+  "description": "Editor Markdown offline-first com preview, sumário, exportação HTML e verificação de links.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check src/link-checker.js && node --check public/markdown.js && node --check public/app.js",
+    "test": "node --test"
+  },
+  "engines": {"node": ">=20"},
+  "license": "MIT"
+}

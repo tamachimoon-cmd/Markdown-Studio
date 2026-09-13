@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import { createMarkdownStudioServer } from '../server.js';
+async function useServer(checker,fn){const s=createMarkdownStudioServer({checker});await new Promise(r=>s.listen(0,'127.0.0.1',r));try{await fn(`http://127.0.0.1:${s.address().port}`)}finally{await new Promise(r=>s.close(r));}}
+test('health check',async()=>useServer(async()=>{},async base=>{const r=await fetch(base+'/api/health');assert.equal(r.status,200);assert.deepEqual(await r.json(),{status:'ok',version:'0.1.0'});}));
+test('limita verificação a links HTTP e preserva locais como skipped',async()=>useServer(async url=>({url,ok:true,status:200}),async base=>{const r=await fetch(base+'/api/check-links',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({links:['https://example.com','#intro']})});const d=await r.json();assert.equal(d.results[0].ok,true);assert.equal(d.results[1].skipped,true);}));
